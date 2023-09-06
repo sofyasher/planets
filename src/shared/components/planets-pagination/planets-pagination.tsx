@@ -13,18 +13,18 @@ type PaginationProps = {
 };
 
 const middleButtonsElements = (
-  middleButtons: number[],
-  active: number,
+  middleButtonsNumbers: number[],
+  activePageNumber: number,
   navigate: any,
   isDisabled: boolean,
   searchString: string | null,
 ) => {
   return (
     <>
-      {middleButtons.map((pageNumber) => (
+      {middleButtonsNumbers.map((pageNumber) => (
         <Pagination.Item
           key={pageNumber}
-          active={active === pageNumber}
+          active={activePageNumber === pageNumber}
           disabled={isDisabled}
           onClick={() =>
             navigate(
@@ -42,35 +42,51 @@ const middleButtonsElements = (
   );
 };
 
-const getVisibleMiddleButtons = (active: number, count: number): number[] => {
-  const allMiddleButtonsCount = count - 2;
+const getVisibleMiddleButtons = (
+  activePageNumber: number,
+  totalPagesCount: number,
+): number[] => {
+  const allMiddleButtonsCount = totalPagesCount - 2;
 
   if (allMiddleButtonsCount === 0) {
     return [];
   }
 
   if (allMiddleButtonsCount >= PAGINATION_VISIBLE_MIDDLE_BUTTONS_MAX_COUNT) {
-    if (active <= PAGINATION_VISIBLE_MIDDLE_BUTTONS_MAX_COUNT) {
+    // if an active page number is not greater than maximum visible middle buttons count,
+    // we can only insert pages [2, ..., maximum visible middle buttons count]
+    if (activePageNumber <= PAGINATION_VISIBLE_MIDDLE_BUTTONS_MAX_COUNT) {
       return Array.from(
         { length: PAGINATION_VISIBLE_MIDDLE_BUTTONS_MAX_COUNT },
         (_, i) => i + 2,
       );
     }
 
-    if (active >= count - PAGINATION_VISIBLE_MIDDLE_BUTTONS_MAX_COUNT + 1) {
+    // the same situation as above, but on the right side
+    if (
+      activePageNumber >=
+      totalPagesCount - PAGINATION_VISIBLE_MIDDLE_BUTTONS_MAX_COUNT + 1
+    ) {
       return Array.from(
         { length: PAGINATION_VISIBLE_MIDDLE_BUTTONS_MAX_COUNT },
-        (_, i) => i + count - PAGINATION_VISIBLE_MIDDLE_BUTTONS_MAX_COUNT,
+        (_, i) =>
+          i + totalPagesCount - PAGINATION_VISIBLE_MIDDLE_BUTTONS_MAX_COUNT,
       );
     }
 
+    // otherwise we add a half of allowed maximum visible middle buttons count to the right after the active page button
+    // and the rest of buttons - to the left from the active button
     return Array.from(
       { length: PAGINATION_VISIBLE_MIDDLE_BUTTONS_MAX_COUNT },
       (_, i) =>
-        i + active - PAGINATION_VISIBLE_MIDDLE_BUTTONS_MAX_COUNT / 2 + 1,
+        i +
+        activePageNumber -
+        PAGINATION_VISIBLE_MIDDLE_BUTTONS_MAX_COUNT / 2 +
+        1,
     );
   }
 
+  // if the middle button count is less than maximum visible middle buttons count, we only add all the buttons
   return Array.from({ length: allMiddleButtonsCount }, (_, i) => i + 2);
 };
 
@@ -79,9 +95,10 @@ const PlanetsPagination = ({ active, count, isDisabled }: PaginationProps) => {
   const query = useQuery();
   const searchString = query.get('search');
   const middleButtons: number[] = getVisibleMiddleButtons(active, count);
+  // is shown when the difference between the page 1 and the first page from the middle section is greater than 1, f.e [1,..., 3, 4, 5, 6]
   const showLeftEllipsis = middleButtons[0] - 1 > 1;
-  const showRightEllipsis =
-    count - middleButtons[PAGINATION_VISIBLE_MIDDLE_BUTTONS_MAX_COUNT - 1] > 1;
+  // the same situation as above, but on the right side
+  const showRightEllipsis = count - middleButtons[middleButtons.length - 1] > 1;
   const showLastNumber = count > 1;
   return (
     <Pagination>

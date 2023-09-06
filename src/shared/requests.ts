@@ -5,7 +5,7 @@ import { fetchPlanetsQueryParams } from './utils';
 export const fetchPlanets = (
   setPlanets: any,
   setLoading: any,
-  queryParams: { search: string | null; page: string | null },
+  queryParams: { search: string | null; page: number | null },
 ) => {
   setLoading(true);
   get(`${PLANETS_LIST_URL}?${fetchPlanetsQueryParams(queryParams)}`)

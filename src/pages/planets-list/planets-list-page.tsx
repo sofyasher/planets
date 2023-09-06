@@ -23,7 +23,7 @@ const PlanetsListPage = () => {
 
   useEffect(() => {
     fetchPlanets(setPlanets, setLoading, {
-      page: pageNumber,
+      page: pageNumber ? parseInt(pageNumber) : null,
       search: searchString,
     });
   }, [pageNumber, searchString]);

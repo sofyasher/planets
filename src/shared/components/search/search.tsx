@@ -24,6 +24,7 @@ const Search = ({ searchString, isDisabled }: SearchProps) => {
   }, [search, navigate]);
 
   useEffect(() => {
+    // when the input is enabled, we focus to it, so the user can search immediately after init or after the list was loaded
     if (inputRef.current) {
       (inputRef.current as HTMLElement).focus();
     }
