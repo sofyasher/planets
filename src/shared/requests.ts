@@ -1,13 +1,15 @@
-import { get, PLANETS_LIST_URL } from './api';
+import { getWithQueryParams, PLANETS_LIST_URL } from './api';
 import { PlanetsModel } from './models/planet.model';
 
 export const DEFAULT_LIST_LENGTH = 10;
 
 export const fetchPlanets = (
   setPlanets: any,
-  queryParams: { search: string | null; page: string | null },
+  setLoading: any,
+  queryParams: { search?: string | null; page?: string | null },
 ) => {
-  get(PLANETS_LIST_URL)
+  setLoading(true);
+  getWithQueryParams(PLANETS_LIST_URL, queryParams)
     .then((response) => {
       if (response.ok) {
         return response.json();
@@ -17,6 +19,7 @@ export const fetchPlanets = (
     })
     .then((result: PlanetsModel) => {
       setPlanets(result);
+      setLoading(false);
     })
     .catch(console.log);
 };
