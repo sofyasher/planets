@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pagination } from 'react-bootstrap';
 import './planets-pagination.scss';
-import { useNavigate } from 'react-router-dom';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { useQuery } from '../../hooks/use-query';
 import { planetsListNavigateUrl } from '../../utils';
 import { PAGINATION_VISIBLE_MIDDLE_BUTTONS_MAX_COUNT } from '../../constants';
@@ -15,7 +15,7 @@ type PaginationProps = {
 const middleButtonsElements = (
   middleButtonsNumbers: number[],
   activePageNumber: number,
-  navigate: any,
+  navigate: NavigateFunction,
   isDisabled: boolean,
   searchString: string | null,
 ) => {
