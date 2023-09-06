@@ -35,19 +35,40 @@ const middleButtonsElements = (
   );
 };
 
-const getMiddleButtons = (active: number, count: number): number[] => {
-  if (count <= 2) {
+const getVisibleMiddleButtons = (active: number, count: number): number[] => {
+  const allMiddleButtonsCount = count - 2;
+
+  if (allMiddleButtonsCount === 0) {
     return [];
   }
 
-  if (count - 2 >= VISIBLE_MIDDLE_BUTTONS_MAX_COUNT) {
-    if (active <= 2) {
-      return [2, 3, 4];
+  if (allMiddleButtonsCount >= VISIBLE_MIDDLE_BUTTONS_MAX_COUNT) {
+    if (active <= VISIBLE_MIDDLE_BUTTONS_MAX_COUNT) {
+      let i = 2;
+      let buttons = [];
+      while (i <= VISIBLE_MIDDLE_BUTTONS_MAX_COUNT + 1) {
+        buttons.push(i);
+        i++;
+      }
+      return buttons;
     }
-    if (active >= count - 2) {
-      return [count - 3, count - 2, count - 1];
+
+    if (active >= count - VISIBLE_MIDDLE_BUTTONS_MAX_COUNT + 1) {
+      let i = count - 1;
+      let buttons = [];
+      while (i >= count - VISIBLE_MIDDLE_BUTTONS_MAX_COUNT) {
+        buttons.push(i);
+        i--;
+      }
+      return buttons.reverse();
     }
-    return [active - 1, active, active + 1];
+
+    let i = active + VISIBLE_MIDDLE_BUTTONS_MAX_COUNT / 2;
+    let buttons = [];
+    for (let j = i; j >= i - VISIBLE_MIDDLE_BUTTONS_MAX_COUNT + 1; j--) {
+      buttons.push(j);
+    }
+    return buttons.reverse();
   }
 
   let i = 2;
@@ -74,7 +95,7 @@ const PlanetsPagination = ({ active, count, isDisabled }: PaginationProps) => {
   const navigate = useNavigate();
   const query = useQuery();
   const searchString = query.get('search');
-  const middleButtons: number[] = getMiddleButtons(active, count);
+  const middleButtons: number[] = getVisibleMiddleButtons(active, count);
   const showLeftEllipsis = middleButtons[0] - 1 > 1;
   const showRightEllipsis =
     count - middleButtons[VISIBLE_MIDDLE_BUTTONS_MAX_COUNT - 1] > 1;
