@@ -2,22 +2,21 @@ import React, { useEffect, useState } from 'react';
 import { Form } from 'react-bootstrap';
 import './search.scss';
 import { useNavigate } from 'react-router-dom';
-
-const SEARCH_DEBOUNCE_TIME = 500;
+import { planetsListNavigateUrl } from '../../utils';
+import { SEARCH_DEBOUNCE_TIME } from '../../constants';
 
 type SearchProps = {
   searchString: string | null;
   isDisabled: boolean;
 };
 
-// @ts-ignore
 const Search = ({ searchString, isDisabled }: SearchProps) => {
   const navigate = useNavigate();
   const [search, setSearch] = useState(searchString ?? '');
 
   useEffect(() => {
     const runSearch = setTimeout(() => {
-      navigate(`?search=${search}`);
+      navigate(planetsListNavigateUrl({ search: search }));
     }, SEARCH_DEBOUNCE_TIME);
 
     return () => clearTimeout(runSearch);
@@ -27,7 +26,7 @@ const Search = ({ searchString, isDisabled }: SearchProps) => {
     <Form>
       <Form.Control
         value={search}
-        placeholder='Search name or its part'
+        placeholder='Search by name or its part'
         disabled={isDisabled}
         onChange={(event) => setSearch(event.target.value)}
       />

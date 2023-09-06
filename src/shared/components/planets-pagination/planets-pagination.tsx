@@ -3,8 +3,8 @@ import { Pagination } from 'react-bootstrap';
 import './planets-pagination.scss';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '../../hooks/use-query';
-
-const VISIBLE_MIDDLE_BUTTONS_MAX_COUNT = 3;
+import { planetsListNavigateUrl } from '../../utils';
+import { PAGINATION_VISIBLE_MIDDLE_BUTTONS_MAX_COUNT } from '../../constants';
 
 type PaginationProps = {
   active: number;
@@ -26,7 +26,14 @@ const middleButtonsElements = (
           key={pageNumber}
           active={active === pageNumber}
           disabled={isDisabled}
-          onClick={() => navigate(navigateUrl(pageNumber, searchString))}
+          onClick={() =>
+            navigate(
+              planetsListNavigateUrl({
+                page: pageNumber,
+                search: searchString,
+              }),
+            )
+          }
         >
           {pageNumber}
         </Pagination.Item>
@@ -42,53 +49,29 @@ const getVisibleMiddleButtons = (active: number, count: number): number[] => {
     return [];
   }
 
-  if (allMiddleButtonsCount >= VISIBLE_MIDDLE_BUTTONS_MAX_COUNT) {
-    if (active <= VISIBLE_MIDDLE_BUTTONS_MAX_COUNT) {
-      let i = 2;
-      let buttons = [];
-      while (i <= VISIBLE_MIDDLE_BUTTONS_MAX_COUNT + 1) {
-        buttons.push(i);
-        i++;
-      }
-      return buttons;
+  if (allMiddleButtonsCount >= PAGINATION_VISIBLE_MIDDLE_BUTTONS_MAX_COUNT) {
+    if (active <= PAGINATION_VISIBLE_MIDDLE_BUTTONS_MAX_COUNT) {
+      return Array.from(
+        { length: PAGINATION_VISIBLE_MIDDLE_BUTTONS_MAX_COUNT },
+        (_, i) => i + 2,
+      );
     }
 
-    if (active >= count - VISIBLE_MIDDLE_BUTTONS_MAX_COUNT + 1) {
-      let i = count - 1;
-      let buttons = [];
-      while (i >= count - VISIBLE_MIDDLE_BUTTONS_MAX_COUNT) {
-        buttons.push(i);
-        i--;
-      }
-      return buttons.reverse();
+    if (active >= count - PAGINATION_VISIBLE_MIDDLE_BUTTONS_MAX_COUNT + 1) {
+      return Array.from(
+        { length: PAGINATION_VISIBLE_MIDDLE_BUTTONS_MAX_COUNT },
+        (_, i) => i + count - PAGINATION_VISIBLE_MIDDLE_BUTTONS_MAX_COUNT,
+      );
     }
 
-    let i = active + VISIBLE_MIDDLE_BUTTONS_MAX_COUNT / 2;
-    let buttons = [];
-    for (let j = i; j >= i - VISIBLE_MIDDLE_BUTTONS_MAX_COUNT + 1; j--) {
-      buttons.push(j);
-    }
-    return buttons.reverse();
+    return Array.from(
+      { length: PAGINATION_VISIBLE_MIDDLE_BUTTONS_MAX_COUNT },
+      (_, i) =>
+        i + active - PAGINATION_VISIBLE_MIDDLE_BUTTONS_MAX_COUNT / 2 + 1,
+    );
   }
 
-  let i = 2;
-  let buttons = [];
-  while (i < count) {
-    buttons.push(i);
-    i++;
-  }
-  return buttons;
-};
-
-const navigateUrl = (page: number | null, search: string | null): string => {
-  let url = '/?';
-  if (page) {
-    url = url.concat('page=' + page);
-  }
-  if (search) {
-    url = url.concat('&search=' + search);
-  }
-  return url;
+  return Array.from({ length: allMiddleButtonsCount }, (_, i) => i + 2);
 };
 
 const PlanetsPagination = ({ active, count, isDisabled }: PaginationProps) => {
@@ -98,23 +81,31 @@ const PlanetsPagination = ({ active, count, isDisabled }: PaginationProps) => {
   const middleButtons: number[] = getVisibleMiddleButtons(active, count);
   const showLeftEllipsis = middleButtons[0] - 1 > 1;
   const showRightEllipsis =
-    count - middleButtons[VISIBLE_MIDDLE_BUTTONS_MAX_COUNT - 1] > 1;
+    count - middleButtons[PAGINATION_VISIBLE_MIDDLE_BUTTONS_MAX_COUNT - 1] > 1;
   const showLastNumber = count > 1;
   return (
     <Pagination>
       <Pagination.First
-        onClick={() => navigate(navigateUrl(1, searchString))}
+        onClick={() =>
+          navigate(planetsListNavigateUrl({ page: 1, search: searchString }))
+        }
         disabled={active === 1 || isDisabled}
       />
       <Pagination.Prev
-        onClick={() => navigate(navigateUrl(active - 1, searchString))}
+        onClick={() =>
+          navigate(
+            planetsListNavigateUrl({ page: active - 1, search: searchString }),
+          )
+        }
         disabled={active === 1 || isDisabled}
       />
       <Pagination.Item
         key={1}
         active={active === 1}
         disabled={isDisabled}
-        onClick={() => navigate(navigateUrl(1, searchString))}
+        onClick={() =>
+          navigate(planetsListNavigateUrl({ page: 1, search: searchString }))
+        }
       >
         1
       </Pagination.Item>
@@ -132,17 +123,29 @@ const PlanetsPagination = ({ active, count, isDisabled }: PaginationProps) => {
           key={count}
           active={active === count}
           disabled={isDisabled}
-          onClick={() => navigate(navigateUrl(count, searchString))}
+          onClick={() =>
+            navigate(
+              planetsListNavigateUrl({ page: count, search: searchString }),
+            )
+          }
         >
           {count}
         </Pagination.Item>
       )}
       <Pagination.Next
-        onClick={() => navigate(navigateUrl(active + 1, searchString))}
+        onClick={() =>
+          navigate(
+            planetsListNavigateUrl({ page: active + 1, search: searchString }),
+          )
+        }
         disabled={active === count || isDisabled}
       />
       <Pagination.Last
-        onClick={() => navigate(navigateUrl(count, searchString))}
+        onClick={() =>
+          navigate(
+            planetsListNavigateUrl({ page: count, search: searchString }),
+          )
+        }
         disabled={active === count || isDisabled}
       />
     </Pagination>

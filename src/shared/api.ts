@@ -7,14 +7,3 @@ export const get = async (url: string, data = {}) => {
     ...data,
   });
 };
-
-export const getWithQueryParams = async (
-  url: string,
-  queryParams = {},
-  data = {},
-) => {
-  return fetch(`${url}?${new URLSearchParams(queryParams)}`, {
-    method: 'GET',
-    ...data,
-  });
-};
