@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { MutableRefObject, useRef } from 'react';
 import './planet-card.scss';
 import { PlanetModel } from '../../models/planet.model';
 import PlanetCardContent from '../planet-content-card/planet-content-card';
@@ -8,40 +8,51 @@ type PlanetCardProps = {
   index: number;
 };
 
-const toggleAccordionItem = (bodyRef: any, index: number) => {
-  if (!bodyRef.current.classList.contains('show')) {
-    bodyRef.current.classList.add('show');
-    bodyRef.current.style.maxHeight = bodyRef.current.scrollHeight + 'px';
-    Array.from(
-      document.getElementsByClassName('planet-card-body show'),
-    ).forEach((accordionItem) => {
-      if (accordionItem.id !== `planet-card-${index}`) {
-        (accordionItem as HTMLElement).style.maxHeight = '0';
-        (accordionItem as HTMLElement).classList.remove('show');
-      }
-    });
+const showCard = (cardRefElement: HTMLDivElement | null) => {
+  const cardBody = cardRefElement?.children[1];
+  cardRefElement?.classList.add('show');
+  cardBody?.setAttribute(
+    'style',
+    `max-height: ${cardBody.scrollHeight + 'px'}`,
+  );
+};
+
+const hideCard = (cardRefElement: HTMLDivElement | null) => {
+  const cardBody = cardRefElement?.children[1];
+  cardRefElement?.classList.remove('show');
+  cardBody?.setAttribute('style', 'max-height: 0');
+};
+
+const toggleAccordionItem = (
+  cardRef: MutableRefObject<HTMLDivElement | null>,
+  index: number,
+) => {
+  const cardRefElement = cardRef.current;
+  if (cardRefElement?.classList.contains('show')) {
+    hideCard(cardRefElement);
   } else {
-    bodyRef.current.style.maxHeight = '0';
-    bodyRef.current.classList.remove('show');
+    Array.from(document.getElementsByClassName('planet-card show'))
+      .filter((accordionItem) => accordionItem.id !== `planet-card-${index}`)
+      .forEach((accordionItem) => {
+        hideCard(accordionItem as HTMLDivElement);
+      });
+
+    showCard(cardRefElement);
   }
 };
 
 const PlanetCard = ({ planet, index }: PlanetCardProps) => {
-  const bodyRef = useRef(null);
+  const cardRef = useRef<HTMLDivElement | null>(null);
 
   return (
-    <div className='planet-card'>
+    <div className='planet-card' ref={cardRef} id={`planet-card-${index}`}>
       <button
         className='planet-card-button'
-        onClick={() => toggleAccordionItem(bodyRef, index)}
+        onClick={() => toggleAccordionItem(cardRef, index)}
       >
         {planet.name}
       </button>
-      <div
-        className={`planet-card-body`}
-        ref={bodyRef}
-        id={`planet-card-${index}`}
-      >
+      <div className={`planet-card-body`}>
         <PlanetCardContent planet={planet} />
       </div>
     </div>

@@ -13,7 +13,7 @@ type SearchProps = {
 const Search = ({ searchString, isDisabled }: SearchProps) => {
   const navigate = useNavigate();
   const [search, setSearch] = useState(searchString ?? '');
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     const runSearch = setTimeout(() => {
@@ -26,7 +26,7 @@ const Search = ({ searchString, isDisabled }: SearchProps) => {
   useEffect(() => {
     // when the input is enabled, we focus to it, so the user can search immediately after init or after the list was loaded
     if (inputRef.current) {
-      (inputRef.current as HTMLElement).focus();
+      inputRef.current.focus();
     }
   }, [isDisabled]);
 

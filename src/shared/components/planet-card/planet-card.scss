@@ -5,25 +5,49 @@
 
 .planet-card {
   width: 100%;
+  position: relative;
+
+  &:first-child {
+    .planet-card-button {
+      border-radius: 10px 10px 0 0;
+    }
+  }
+
+  &:not(:last-child) {
+    .planet-card-body {
+      border-bottom: none;
+    }
+  }
+
+  &.show {
+    .planet-card-button {
+      background-color: #cfe2ff;
+    }
+  }
 }
 
 .planet-card-button {
   width: 100%;
-  height: 40px;
+  height: 50px;
   outline: none;
-  border: none;
+  border: solid 1px #dee2e6;
+  background-color: #ffffff;
+  z-index: 2;
+
+  &:focus {
+    box-shadow: 0 0 0 0.25rem #0d6efd40;
+    z-index: 3;
+  }
 }
 
 .planet-card-body {
-  border-radius: 0 0 20px 20px;
-  border: solid 1px #000000;
+  border: solid 1px #dee2e6;
   overflow: hidden;
   max-height: 0;
   transition: max-height 0.2s ease-out;
 }
 
 .planet-card-content {
-  display: flex;
   padding: 20px;
   min-height: 1px;
 }

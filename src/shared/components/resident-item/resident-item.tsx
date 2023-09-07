@@ -16,7 +16,13 @@ const ResidentItem = ({ residentUrl }: ResidentProps) => {
     fetchItem<ResidentModel>(residentUrl, setResident, setLoading);
   }, [residentUrl]);
   return (
-    <>{!isLoading ? <span>{resident?.name}</span> : <Spinner></Spinner>}</>
+    <>
+      {!isLoading ? (
+        <i>{resident?.name}</i>
+      ) : (
+        <Spinner animation='grow' size='sm' />
+      )}
+    </>
   );
 };
 

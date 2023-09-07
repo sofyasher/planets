@@ -14,7 +14,15 @@ const FilmItem = ({ filmUrl }: FilmProps) => {
   useEffect(() => {
     fetchItem<FilmModel>(filmUrl, setFilm, setLoading);
   }, [filmUrl]);
-  return <>{!isLoading ? <span>{film?.title}</span> : <Spinner></Spinner>}</>;
+  return (
+    <>
+      {!isLoading ? (
+        <i>{film?.title}</i>
+      ) : (
+        <Spinner animation='grow' size='sm' />
+      )}
+    </>
+  );
 };
 
 export default FilmItem;

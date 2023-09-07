@@ -28,7 +28,7 @@ const PlanetsListPage = () => {
     });
   }, [pageNumber, searchString]);
   return (
-    <Container fluid>
+    <Container fluid className='mb-5 ps-4 pe-4'>
       <h1 className='mt-4 mb-5'>
         <Link
           className={isLoading ? 'planets-list-page-disabled-link' : ''}
