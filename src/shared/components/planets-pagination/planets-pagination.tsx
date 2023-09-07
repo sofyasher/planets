@@ -23,6 +23,7 @@ const middleButtonsElements = (
     <>
       {middleButtonsNumbers.map((pageNumber) => (
         <Pagination.Item
+          tabIndex={-1}
           key={pageNumber}
           active={activePageNumber === pageNumber}
           disabled={isDisabled}
@@ -103,12 +104,14 @@ const PlanetsPagination = ({ active, count, isDisabled }: PaginationProps) => {
   return (
     <Pagination>
       <Pagination.First
+        tabIndex={-1}
         onClick={() =>
           navigate(planetsListNavigateUrl({ page: 1, search: searchString }))
         }
         disabled={active === 1 || isDisabled}
       />
       <Pagination.Prev
+        tabIndex={-1}
         onClick={() =>
           navigate(
             planetsListNavigateUrl({ page: active - 1, search: searchString }),
@@ -117,6 +120,7 @@ const PlanetsPagination = ({ active, count, isDisabled }: PaginationProps) => {
         disabled={active === 1 || isDisabled}
       />
       <Pagination.Item
+        tabIndex={-1}
         key={1}
         active={active === 1}
         disabled={isDisabled}
@@ -137,6 +141,7 @@ const PlanetsPagination = ({ active, count, isDisabled }: PaginationProps) => {
       {showRightEllipsis && <Pagination.Ellipsis disabled={true} />}
       {showLastNumber && (
         <Pagination.Item
+          tabIndex={-1}
           key={count}
           active={active === count}
           disabled={isDisabled}
@@ -150,6 +155,7 @@ const PlanetsPagination = ({ active, count, isDisabled }: PaginationProps) => {
         </Pagination.Item>
       )}
       <Pagination.Next
+        tabIndex={-1}
         onClick={() =>
           navigate(
             planetsListNavigateUrl({ page: active + 1, search: searchString }),
@@ -158,6 +164,7 @@ const PlanetsPagination = ({ active, count, isDisabled }: PaginationProps) => {
         disabled={active === count || isDisabled}
       />
       <Pagination.Last
+        tabIndex={-1}
         onClick={() =>
           navigate(
             planetsListNavigateUrl({ page: count, search: searchString }),
