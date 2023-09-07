@@ -1,3 +1,4 @@
+export const LOCALE = 'cs-CZ';
 export const DEFAULT_LIST_LENGTH = 10;
 export const SEARCH_DEBOUNCE_TIME = 500;
 export const PAGINATION_VISIBLE_MIDDLE_BUTTONS_MAX_COUNT = 3;
