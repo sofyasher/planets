@@ -14,7 +14,7 @@ const ResidentItem = ({ residentUrl, reloadNeeded }: ResidentProps) => {
   const [isLoading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    // residents details are now requested only once after the first expanding
+    // residents details are now requested only once after the first card expanding
     if (reloadNeeded) {
       fetchItem<ResidentModel>(residentUrl, setResident, setLoading);
     }

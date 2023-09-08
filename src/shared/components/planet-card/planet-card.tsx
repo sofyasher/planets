@@ -13,7 +13,7 @@ const showCard = (cardRefElement: HTMLDivElement | null) => {
   cardRefElement?.classList.add('show');
   cardBody?.setAttribute(
     'style',
-    `max-height: ${cardBody.scrollHeight + 'px'}`,
+    `max-height: ${cardBody.scrollHeight + 100 + 'px'}`, // 100px is a margin for residents and films elements
   );
 };
 

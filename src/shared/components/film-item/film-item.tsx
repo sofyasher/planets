@@ -14,7 +14,7 @@ const FilmItem = ({ filmUrl, reloadNeeded }: FilmProps) => {
   const [isLoading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    // films details are now requested only once after the first expanding
+    // films details are now requested only once after the first card expanding
     if (reloadNeeded) {
       fetchItem<FilmModel>(filmUrl, setFilm, setLoading);
     }
