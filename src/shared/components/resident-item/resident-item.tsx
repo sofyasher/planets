@@ -6,15 +6,19 @@ import { Spinner } from 'react-bootstrap';
 
 type ResidentProps = {
   residentUrl: string;
+  reloadNeeded: boolean;
 };
 
-const ResidentItem = ({ residentUrl }: ResidentProps) => {
+const ResidentItem = ({ residentUrl, reloadNeeded }: ResidentProps) => {
   const [resident, setResident] = useState<ResidentModel | null>(null);
   const [isLoading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    fetchItem<ResidentModel>(residentUrl, setResident, setLoading);
-  }, [residentUrl]);
+    // residents details are now requested only once after the first expanding
+    if (reloadNeeded) {
+      fetchItem<ResidentModel>(residentUrl, setResident, setLoading);
+    }
+  }, [residentUrl, reloadNeeded]);
   return (
     <>
       {!isLoading ? (

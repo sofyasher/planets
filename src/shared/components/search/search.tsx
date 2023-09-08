@@ -37,6 +37,7 @@ const Search = ({ searchString, isDisabled }: SearchProps) => {
       placeholder='Search by name or its part'
       disabled={isDisabled}
       onChange={(event) => setSearch(event.target.value)}
+      className='mb-3'
     />
   );
 };

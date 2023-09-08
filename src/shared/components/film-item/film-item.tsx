@@ -6,14 +6,19 @@ import { Spinner } from 'react-bootstrap';
 
 type FilmProps = {
   filmUrl: string;
+  reloadNeeded: boolean;
 };
-const FilmItem = ({ filmUrl }: FilmProps) => {
+
+const FilmItem = ({ filmUrl, reloadNeeded }: FilmProps) => {
   const [film, setFilm] = useState<FilmModel | null>(null);
   const [isLoading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    fetchItem<FilmModel>(filmUrl, setFilm, setLoading);
-  }, [filmUrl]);
+    // films details are now requested only once after the first expanding
+    if (reloadNeeded) {
+      fetchItem<FilmModel>(filmUrl, setFilm, setLoading);
+    }
+  }, [filmUrl, reloadNeeded]);
   return (
     <>
       {!isLoading ? (

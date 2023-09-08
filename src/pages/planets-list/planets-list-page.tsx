@@ -45,16 +45,18 @@ const PlanetsListPage = () => {
       <Row className='mt-3'>
         <Col>
           <PlanetsPagination
-            active={pageNumber ? parseInt(pageNumber) : 1}
+            activePageNumber={pageNumber ? parseInt(pageNumber) : 1}
             isDisabled={isLoading}
-            count={pagesCount}
+            totalPagesCount={pagesCount}
           />
         </Col>
       </Row>
       {!isLoading && planets?.results ? (
         <PlanetsList planets={planets?.results} />
       ) : (
-        <Spinner></Spinner>
+        <>
+          <Spinner></Spinner> <br /> Loading, please wait...
+        </>
       )}
     </Container>
   );

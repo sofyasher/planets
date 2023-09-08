@@ -50,6 +50,6 @@ export const getVisibleMiddleButtons = (
     );
   }
 
-  // if the middle button count is less than maximum visible middle buttons count, we only add all the buttons
+  // if the middle buttons count is less than maximum visible middle buttons count, we only add all the buttons
   return Array.from({ length: allMiddleButtonsCount }, (_, i) => i + 2);
 };

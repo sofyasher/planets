@@ -24,12 +24,21 @@ export const fetchPlanets = (
     .catch(console.log);
 };
 
+/**
+ * Is used for fetching film and resident detail by provided detail endpoint URL.
+ * @param url
+ * @param setItem
+ * @param setLoading
+ */
 export const fetchItem = <T>(
   url: string,
   setItem: Dispatch<T>,
   setLoading: Dispatch<boolean>,
 ) => {
   setLoading(true);
+  // unfortunately there is no endpoint for getting of list the elements with specified ids, so the solution
+  // meets the problem of rate limiting and some of the elements may not be returned,
+  // when requested for a lot of them at once :(
   get(url)
     .then((response) => {
       if (response.ok) {

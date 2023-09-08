@@ -17,7 +17,7 @@ const PlanetsList = ({ planets }: PlanetsListProps) => {
           ))}
         </div>
       ) : (
-        <div>No results found for this query</div>
+        <div className='mt-5'>No results found for this query</div>
       )}
     </>
   );
