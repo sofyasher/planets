@@ -18,7 +18,7 @@ const PlanetsListPage = () => {
   const [planets, setPlanets] = useState<PlanetsModel | null>(null);
   const [isLoading, setLoading] = useState<boolean>(true);
   const pagesCount = planets
-    ? Math.round(planets.count / DEFAULT_LIST_LENGTH)
+    ? Math.ceil(planets.count / DEFAULT_LIST_LENGTH)
     : 1;
 
   useEffect(() => {

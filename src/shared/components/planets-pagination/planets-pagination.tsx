@@ -49,9 +49,11 @@ const PlanetsPagination = ({ active, count, isDisabled }: PaginationProps) => {
   const searchString = query.get('search');
   const middleButtons: number[] = getVisibleMiddleButtons(active, count);
   // is shown when the difference between the page 1 and the first page from the middle section is greater than 1, f.e [1,..., 3, 4, 5, 6]
-  const showLeftEllipsis = middleButtons[0] - 1 > 1;
+  const showLeftEllipsis = middleButtons.length > 0 && middleButtons[0] - 1 > 1;
   // the same situation as above, but on the right side
-  const showRightEllipsis = count - middleButtons[middleButtons.length - 1] > 1;
+  const showRightEllipsis =
+    middleButtons.length > 0 &&
+    count - middleButtons[middleButtons.length - 1] > 1;
   const showLastNumber = count > 1;
   return (
     <Pagination>

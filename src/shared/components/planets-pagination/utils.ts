@@ -1,5 +1,14 @@
 export const PAGINATION_VISIBLE_MIDDLE_BUTTONS_MAX_COUNT = 3;
 
+/**
+ * Depending on the total pages count, on the active page number and on the maximum visible middle buttons count,
+ * the function returns an array of pages numbers, which should be visible in middle of pagination buttons, between ellipsis.
+ * For input (6, 12, 3) the function will return [5, 6, 7], the resulted pagination buttons will be the following:
+ * << < 1 ... 5 6 7 ... 12 > >>.
+ * @param activePageNumber The number of active page
+ * @param totalPagesCount The total pages count
+ * @param visibleMiddleButtonsMaxCount The maximum count of visible middle buttons.
+ */
 export const getVisibleMiddleButtons = (
   activePageNumber: number,
   totalPagesCount: number,
@@ -36,7 +45,8 @@ export const getVisibleMiddleButtons = (
     // and the rest of buttons - to the left from the active button
     return Array.from(
       { length: visibleMiddleButtonsMaxCount },
-      (_, i) => i + activePageNumber - visibleMiddleButtonsMaxCount / 2 + 1,
+      (_, i) =>
+        i + activePageNumber - Math.round(visibleMiddleButtonsMaxCount / 2) + 1,
     );
   }
 
